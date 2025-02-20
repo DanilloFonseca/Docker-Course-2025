@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: "mongo"
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: 
+      context: ./backend/
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/usr/src/app
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: 
+      context: ./frontend/
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules 
+    depends_on:
+      - backend
